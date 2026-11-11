@@ -7,6 +7,8 @@
   <title>텀블공장 · 오늘 운영</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="./styles.css">
+  <script src="./sample-data.js" defer></script>
+  <script src="./app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 이동</a>
@@ -44,18 +46,20 @@
   </header>
   <main id="main" tabindex="-1">
     <section id="page-content">
+      <a id="back-link" href="#/today" hidden>← 오늘 운영</a>
+      <p id="route-notice" class="notice warning" hidden>요청한 주소의 화면이 없어 오늘 운영으로 이동했습니다.</p>
       <h1 id="page-title">오늘 운영</h1>
-      <p>생산·출고 실적과 운영 상태를 살펴봅니다.</p>
+      <p id="page-description">생산·출고 실적과 운영 상태를 살펴봅니다.</p>
       <div id="today-view">
-        <section class="hero neutral">
-          <p>먼저 확인할 일</p>
+        <section id="hero" class="hero neutral">
+          <p>먼저 확인할 일<span class="help-wrap"><button class="help-btn" type="button" aria-expanded="false" aria-label="확인할 항목 설명" data-pinned="false">?</button><span class="help-popover" role="tooltip" hidden>기록 지연·처리 누락·조회 오류·알림 실패처럼 확인이 필요한 사건입니다. 같은 사건은 한 번만 셉니다. 자료를 받지 못한 경우 0건으로 표시하지 않습니다.</span></span></p>
           <h2 id="hero-title">우선 확인할 문제가 없습니다.</h2>
-          <p hidden></p>
-          <p>운영 담당자 · 기록 갱신 상태를 계속 확인해 주세요.</p>
+          <p id="hero-owner" hidden></p>
+          <p id="hero-action">운영 담당자 · 기록 갱신 상태를 계속 확인해 주세요.</p>
         </section>
         <div class="grid kpis">
           <article class="card">
-            <p class="card-label">공장 생산</p>
+            <p class="card-label">공장 생산<span class="help-wrap"><button class="help-btn" type="button" aria-expanded="false" aria-label="공장 생산 설명" data-pinned="false">?</button><span class="help-popover" role="tooltip" hidden>선택한 기준 시각까지 처리가 완료된 오늘 생산 기록의 수량 합계입니다. 계획은 하루 생산 목표입니다.</span></span></p>
             <p id="factory-quantity" class="value quantity-line"><span>생산 100개</span><span class="quantity-goal">· 목표 120개</span></p>
             <p id="factory-progress-text" class="card-description">계획 대비 83.3%</p>
             <progress id="factory-progress" max="100" value="83.3"></progress>
@@ -73,7 +77,7 @@
             </div>
           </article>
           <article class="card">
-            <p class="card-label">창고 출고</p>
+            <p class="card-label">창고 출고<span class="help-wrap"><button class="help-btn" type="button" aria-expanded="false" aria-label="창고 출고 설명" data-pinned="false">?</button><span class="help-popover" role="tooltip" hidden>선택한 기준 시각까지 처리가 완료된 오늘 출고 기록의 수량 합계입니다. 주문 수나 재고 수가 아닙니다.</span></span></p>
             <p id="warehouse-quantity" class="value quantity-line"><span>출고 75개</span><span class="quantity-goal">· 목표 100개</span></p>
             <p id="warehouse-progress-text" class="card-description">계획 대비 75.0%</p>
             <progress id="warehouse-progress" max="100" value="75"></progress>
@@ -91,56 +95,65 @@
             </div>
           </article>
         </div>
+        <section id="operating-status" class="section">
+          <h2>운영 상태<span class="help-wrap"><button class="help-btn" type="button" aria-expanded="false" aria-label="운영 상태 설명" data-pinned="false">?</button><span class="help-popover" role="tooltip" hidden>기록 수집·화면 조회·알림 전송이 정상적으로 이어지는지 확인하는 영역입니다.</span></span></h2>
+          <p class="section-intro">공장·창고의 마지막 기록 시각과 서비스별 상시 운영 상태를 확인합니다.</p>
+          <div class="grid status-grid">
+            <article id="factory-status" class="card status-card">
+              <div class="status-line"><h3>공장 생산 기록<span class="help-wrap"><button class="help-btn" type="button" aria-expanded="false" aria-label="최근 공장 기록 설명" data-pinned="false">?</button><span class="help-popover" role="tooltip" hidden>마지막 공장 기록이 현장에서 발생한 시각입니다. 화면을 새로 조회한 시각과 다릅니다.</span></span></h3><span class="badge good">정상</span></div>
+              <p class="card-description">기록이 반영되고 있습니다.</p>
+              <p class="meta">기준 시각 대비: 15분 전 · 발생 시각: 2026. 10. 26. 12:55:00</p>
+              <a class="card-link" href="#/records/factory">오늘 생산 기록 보기</a>
+            </article>
+            <article id="warehouse-status" class="card status-card">
+              <div class="status-line"><h3>창고 출고 기록</h3><span class="badge good">정상</span></div>
+              <p class="card-description">기록이 반영되고 있습니다.</p>
+              <p class="meta">기준 시각 대비: 12분 전 · 발생 시각: 2026. 10. 26. 12:58:00</p>
+              <a class="card-link" href="#/records/warehouse">오늘 출고 기록 보기</a>
+            </article>
+            <article id="alerts-status" class="card status-card">
+              <div class="status-line"><h3>알림 전송 기록</h3><span class="badge good">전송 성공</span></div>
+              <p class="card-description">알림 전송이 완료됐습니다.</p>
+              <p class="meta">마지막 전송 시도: 2026. 10. 26. 12:30:00</p>
+            </article>
+          </div>
+        </section>
+        <section id="processing-status" class="section">
+          <h2>기록 처리 상태</h2>
+          <p class="section-intro">현장 기록의 발생·서버 접수·서버 처리 시각을 확인합니다.</p>
+          <div class="grid two-columns">
+            <article id="factory-flow" class="card"><h3>텀블공장</h3><p class="meta">기록 처리 정보 조회 중</p></article>
+            <article id="warehouse-flow" class="card"><h3>물류창고</h3><p class="meta">기록 처리 정보 조회 중</p></article>
+          </div>
+        </section>
+        <section id="query-history" class="section">
+          <h2>데이터 조회 기록</h2>
+          <p class="section-intro">이 탭에서 대시보드가 서버에 요청한 기록입니다. 공장·창고는 같은 요청으로 조회합니다.</p>
+          <div class="grid two-columns">
+            <article class="card">
+              <h3>공장 조회</h3>
+              <p id="factory-query">조회 기록 없음</p>
+              <p id="factory-query-meta" class="meta" hidden></p>
+              <a class="card-link" href="#/queries/factory">전체보기</a>
+            </article>
+            <article class="card">
+              <h3>창고 조회</h3>
+              <p id="warehouse-query">조회 기록 없음</p>
+              <p id="warehouse-query-meta" class="meta" hidden></p>
+              <a class="card-link" href="#/queries/warehouse">전체보기</a>
+            </article>
+          </div>
+        </section>
       </div>
-      <section class="section">
-        <h2>운영 상태</h2>
-        <p class="section-intro">공장·창고의 마지막 기록 시각과 서비스별 상시 운영 상태를 확인합니다.</p>
-        <div class="grid status-grid">
-          <article id="factory-status" class="card status-card">
-            <div class="status-line"><h3>공장 생산 기록</h3><span class="badge good">정상</span></div>
-            <p class="card-description">기록이 반영되고 있습니다.</p>
-            <p class="meta">기준 시각 대비: 15분 전 · 발생 시각: 2026. 10. 26. 12:55:00</p>
-            <a class="card-link" href="#/records/factory">오늘 생산 기록 보기</a>
-          </article>
-          <article id="warehouse-status" class="card status-card">
-            <div class="status-line"><h3>창고 출고 기록</h3><span class="badge good">정상</span></div>
-            <p class="card-description">기록이 반영되고 있습니다.</p>
-            <p class="meta">기준 시각 대비: 12분 전 · 발생 시각: 2026. 10. 26. 12:58:00</p>
-            <a class="card-link" href="#/records/warehouse">오늘 출고 기록 보기</a>
-          </article>
-          <article id="alerts-status" class="card status-card">
-            <div class="status-line"><h3>알림 전송 기록</h3><span class="badge good">전송 성공</span></div>
-            <p class="card-description">알림 전송이 완료됐습니다.</p>
-            <p class="meta">마지막 전송 시도: 2026. 10. 26. 12:30:00</p>
-          </article>
-        </div>
+      <section id="records-view" hidden>
+        <form id="record-filter" class="record-filter" method="dialog">
+          <label>시작 시각<input id="record-from" name="from" type="datetime-local" step="1" required></label>
+          <label>종료 시각<input id="record-to" name="to" type="datetime-local" step="1" required></label>
+          <button id="record-submit" type="submit">시간대 조회</button>
+        </form>
+        <div id="records-result"></div>
       </section>
-      <section class="section">
-        <h2>기록 처리 상태</h2>
-        <p class="section-intro">현장 기록의 발생·서버 접수·서버 처리 시각을 확인합니다.</p>
-        <div class="grid two-columns">
-          <article id="factory-flow" class="card"><h3>텀블공장</h3><p class="meta">기록 처리 정보 조회 중</p></article>
-          <article id="warehouse-flow" class="card"><h3>물류창고</h3><p class="meta">기록 처리 정보 조회 중</p></article>
-        </div>
-      </section>
-      <section class="section">
-        <h2>데이터 조회 기록</h2>
-        <p class="section-intro">이 탭에서 대시보드가 서버에 요청한 기록입니다. 공장·창고는 같은 요청으로 조회합니다.</p>
-        <div class="grid two-columns">
-          <article class="card">
-            <h3>공장 조회</h3>
-            <p id="factory-query">조회 기록 없음</p>
-            <p id="factory-query-meta" class="meta" hidden></p>
-            <a class="card-link" href="#/queries/factory">전체보기</a>
-          </article>
-          <article class="card">
-            <h3>창고 조회</h3>
-            <p id="warehouse-query">조회 기록 없음</p>
-            <p id="warehouse-query-meta" class="meta" hidden></p>
-            <a class="card-link" href="#/queries/warehouse">전체보기</a>
-          </article>
-        </div>
-      </section>
+      <section id="queries-view" hidden></section>
     </section>
     <noscript><p class="notice warning">화면을 보려면 브라우저에서 자바스크립트를 허용해 주세요.</p></noscript>
   </main>
